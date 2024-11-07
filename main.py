@@ -77,7 +77,7 @@ def main(cfg_path: str) -> None:
         torch.cuda.empty_cache()
 
     print("Done")
-
+# "c4realnews-val-10" "dolly-writing-100-long"
 
 if __name__ == "__main__":
     print(f"{datetime.datetime.now()}")

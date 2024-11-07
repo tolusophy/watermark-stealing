@@ -122,6 +122,10 @@ class WatermarkLogitsProcessor(WatermarkBase, LogitsProcessor):
         self.rng = torch.Generator(device=device)
         self.tokenizer = tokenizer
 
+    def _generate_new_hash_key(self) -> int:
+        """Generate a new hash key using a random integer within the 64-bit range."""
+        return random.randint(0, 2**64 - 1)
+    
     def _init_spike_entropies(self):
         alpha = torch.exp(torch.tensor(self.delta)).item()
         gamma = self.gamma
@@ -204,6 +208,9 @@ class WatermarkLogitsProcessor(WatermarkBase, LogitsProcessor):
 
     def __call__(self, input_ids: torch.LongTensor, scores: torch.Tensor) -> torch.Tensor:
         """Call with previous context as input_ids, and scores for next token."""
+
+        # Generate a new random hash key for every call
+        # self.hash_key = self._generate_new_hash_key()
 
         # this is lazy to allow us to co-locate on the watermarked model's device
         # self.rng = torch.Generator(device=input_ids.device) if self.rng is None else self.rng
